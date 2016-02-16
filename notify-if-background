@@ -21,11 +21,12 @@
 #   http://growl.info/extras.php/#growlnotify
 
 local term_id title icon_switch
-local -a otitle oicon
-zparseopts t:=otitle -icon:=oicon
+local -a otitle oicon picture
+zparseopts t:=otitle -icon:=oicon -picture:=picture
 
 icon=$oicon[2]
 title=$otitle[2]
+picture=$picture[2]
 message=$(<&0)
 
 [[ -z "$SYS_NOTIFIER" ]] \
@@ -80,7 +81,7 @@ fi
 
 
 if [[ -x "$SYS_NOTIFIER" ]]; then
-  "$SYS_NOTIFIER" -activate "$term_id" -sender "$term_id" -title "$title" -message "$message" 1>/dev/null 
+  "$SYS_NOTIFIER" -activate "$term_id" -sender "$term_id" -title "$title" -message "$message" -contentImage "$picture" 1>/dev/null 
 elif [[ -x "$GROWL_NOTIFIER" ]]; then
   [[ ! -z "$icon" ]] && icon_switch="--iconpath $icon"
   echo "$message" | "$GROWL_NOTIFIER" "$title" 
